@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nanairo | 人生に、七色の彩りを。</title>
+  <meta name="description" content="Nanairoは、テクノロジーで日常に「ワクワク」と「可能性」を届ける個人事業です。瞑想アプリ HITOIKI を開発・運営しています。">
+  <meta name="keywords" content="Nanairo, ナナイロ, アプリ開発, HITOIKI, 瞑想">
+  <meta property="og:title" content="Nanairo | 人生に、七色の彩りを。">
+  <meta property="og:description" content="テクノロジーで日常に「ワクワク」と「可能性」を届けます。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://nanairo.life">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Quicksand:wght@500;600;700&family=Comfortaa:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ===== リセット & ベース ===== */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --rainbow-red: #f87171;
+      --rainbow-orange: #fb923c;
+      --rainbow-yellow: #fbbf24;
+      --rainbow-green: #34d399;
+      --rainbow-blue: #60a5fa;
+      --rainbow-indigo: #818cf8;
+      --rainbow-purple: #a78bfa;
+
+      --navy: #1e293b;
+      --navy-light: #334155;
+      --gray-100: #f8fafc;
+      --gray-200: #e2e8f0;
+      --gray-400: #94a3b8;
+      --gray-600: #475569;
+      --white: #ffffff;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Outfit', 'Noto Sans JP', sans-serif;
+      color: var(--navy);
+      line-height: 1.7;
+      background: var(--gray-100);
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ===== アニメーション ===== */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+
+    @keyframes dotPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+    }
+
+    @keyframes rainbowLine {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== ヘッダー ===== */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 16px 24px;
+      transition: all 0.4s ease;
+      background: transparent;
+    }
+
+    header.scrolled {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 2px 24px rgba(30, 41, 59, 0.08);
+    }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-logo-icon {
+      width: 36px;
+      height: 36px;
+    }
+
+    .header-logo-text {
+      font-family: 'Outfit', sans-serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--white);
+      transition: color 0.4s ease;
+    }
+
+    .header-logo-text .n-accent {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    header.scrolled .header-logo-text {
+      color: var(--navy);
+    }
+
+    nav {
+      display: flex;
+      gap: 28px;
+    }
+
+    nav a {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.85);
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--rainbow-blue), var(--rainbow-purple));
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    header.scrolled nav a {
+      color: var(--gray-600);
+    }
+
+    header.scrolled nav a:hover {
+      color: var(--navy);
+    }
+
+    /* ===== ヒーロー ===== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      background: linear-gradient(145deg, #1e293b 0%, #0f172a 40%, #1e1b4b 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(167, 139, 250, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(248, 113, 113, 0.05) 0%, transparent 40%);
+      animation: float 12s ease-in-out infinite;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+    }
+
+    .hero-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 40px;
+      animation: fadeInUp 1s ease;
+    }
+
+    .hero-logo-icon {
+      width: 64px;
+      height: 64px;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .hero-logo-text {
+      font-family: 'Comfortaa', sans-serif;
+      font-size: 52px;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .hero-tagline {
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 20px;
+      line-height: 1.4;
+      animation: fadeInUp 1s ease 0.2s backwards;
+    }
+
+    .hero-tagline .highlight {
+      background: linear-gradient(90deg, var(--rainbow-red), var(--rainbow-orange), var(--rainbow-yellow), var(--rainbow-green), var(--rainbow-blue), var(--rainbow-indigo), var(--rainbow-purple));
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 4s ease-in-out infinite;
+    }
+
+    .hero-sub {
+      font-size: 16px;
+      color: var(--gray-400);
+      max-width: 520px;
+      margin: 0 auto 40px;
+      animation: fadeInUp 1s ease 0.4s backwards;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: var(--white);
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+      animation: fadeInUp 1s ease 0.6s backwards;
+      box-shadow: 0 8px 32px rgba(102, 126, 234, 0.35);
+    }
+
+    .hero-cta:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(102, 126, 234, 0.5);
+    }
+
+    .hero-scroll-indicator {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--gray-400);
+      font-size: 11px;
+      letter-spacing: 2px;
+      animation: float 2s ease-in-out infinite;
+    }
+
+    .hero-scroll-indicator .arrow {
+      width: 20px;
+      height: 20px;
+      border-right: 2px solid var(--gray-400);
+      border-bottom: 2px solid var(--gray-400);
+      transform: rotate(45deg);
+    }
+
+    /* ===== レインボーライン ===== */
+    .rainbow-divider {
+      height: 4px;
+      background: linear-gradient(90deg,
+        var(--rainbow-red),
+        var(--rainbow-orange),
+        var(--rainbow-yellow),
+        var(--rainbow-green),
+        var(--rainbow-blue),
+        var(--rainbow-indigo),
+        var(--rainbow-purple),
+        var(--rainbow-red)
+      );
+      background-size: 200% 100%;
+      animation: rainbowLine 4s linear infinite;
+    }
+
+    /* ===== セクション共通 ===== */
+    section {
+      padding: 100px 24px;
+    }
+
+    .section-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 20px;
+      line-height: 1.3;
+    }
+
+    .section-desc {
+      font-size: 16px;
+      color: var(--gray-600);
+      max-width: 600px;
+      line-height: 1.8;
+    }
+
+    /* ===== About ===== */
+    .about {
+      background: var(--white);
+    }
+
+    .about-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .about-text .section-desc {
+      margin-bottom: 40px;
+    }
+
+    .about-values {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .value-card {
+      background: linear-gradient(145deg, #f8fafc 0%, #f0f4ff 100%);
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .value-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(99, 102, 241, 0.12);
+    }
+
+    .value-icon {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .value-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    .about-visual {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .about-mission-box {
+      background: linear-gradient(135deg, #f0f4ff 0%, #fdf2f8 50%, #fef3c7 100%);
+      border-radius: 24px;
+      padding: 40px;
+      text-align: center;
+      width: 100%;
+    }
+
+    .mission-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 16px;
+    }
+
+    .mission-text {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--navy);
+      line-height: 1.6;
+    }
+
+    .about-rainbow-dots {
+      display: flex;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .about-rainbow-dots .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      transition: transform 0.3s ease;
+    }
+
+    .about-rainbow-dots .dot:hover {
+      transform: scale(1.4);
+    }
+
+    /* ===== Services ===== */
+    .services {
+      background: var(--gray-100);
+    }
+
+    .services-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .services-header .section-desc {
+      margin: 0 auto;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 32px;
+    }
+
+    .service-card {
+      background: var(--white);
+      border-radius: 24px;
+      overflow: hidden;
+      transition: all 0.4s ease;
+      box-shadow: 0 4px 24px rgba(30, 41, 59, 0.06);
+    }
+
+    .service-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 16px 48px rgba(30, 41, 59, 0.12);
+    }
+
+    .service-card-header {
+      padding: 40px 32px 32px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      text-align: center;
+      position: relative;
+    }
+
+    .service-card-header.coming-soon {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    }
+
+    .service-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 20%;
+    }
+
+    .service-icon img {
+      width: 100%;
+      height: 100%;
+      border-radius: 20%;
+    }
+
+    .service-icon.placeholder {
+      background: rgba(255, 255, 255, 0.15);
+      font-size: 28px;
+    }
+
+    .service-name {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+
+    .service-tagline-text {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .service-card-body {
+      padding: 32px;
+    }
+
+    .service-description {
+      font-size: 14px;
+      color: var(--gray-600);
+      margin-bottom: 24px;
+      line-height: 1.8;
+    }
+
+    .service-features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .service-feature-tag {
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #f0f4ff 0%, #fdf2f8 100%);
+      color: #6366f1;
+    }
+
+    .service-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #667eea;
+      transition: all 0.3s ease;
+    }
+
+    .service-link:hover {
+      gap: 12px;
+      color: #764ba2;
+    }
+
+    .service-link .arrow {
+      transition: transform 0.3s ease;
+    }
+
+    .service-link:hover .arrow {
+      transform: translateX(4px);
+    }
+
+    /* ===== Contact ===== */
+    .contact {
+      background: var(--white);
+    }
+
+    .contact-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    .contact-text .section-desc {
+      margin-bottom: 40px;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .contact-link-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px;
+      background: var(--gray-100);
+      border-radius: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .contact-link-item:hover {
+      background: linear-gradient(135deg, #f0f4ff 0%, #fdf2f8 100%);
+      transform: translateX(4px);
+    }
+
+    .contact-icon-wrap {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .contact-icon-wrap.email-icon {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .contact-icon-wrap.web-icon {
+      background: linear-gradient(135deg, #34d399 0%, #22c55e 100%);
+    }
+
+    .contact-icon-wrap.x-icon {
+      background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
+    }
+
+    .contact-icon-wrap svg {
+      width: 22px;
+      height: 22px;
+      fill: white;
+    }
+
+    .contact-link-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 2px;
+    }
+
+    .contact-link-value {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--navy);
+    }
+
+    .contact-card {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+      border-radius: 24px;
+      padding: 48px 40px;
+      text-align: center;
+      color: var(--white);
+    }
+
+    .contact-card-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .contact-card-logo svg {
+      width: 44px;
+      height: 44px;
+    }
+
+    .contact-card-logo-text {
+      font-family: 'Outfit', sans-serif;
+      font-size: 28px;
+      font-weight: 600;
+    }
+
+    .contact-card-name {
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-bottom: 4px;
+    }
+
+    .contact-card-title {
+      font-size: 13px;
+      color: var(--gray-400);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .contact-card-tagline {
+      font-size: 14px;
+      color: var(--gray-400);
+      line-height: 1.6;
+    }
+
+    .contact-card-tagline strong {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    /* ===== フッター ===== */
+    footer {
+      background: var(--navy);
+      padding: 48px 24px 32px;
+      text-align: center;
+    }
+
+    .footer-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .footer-rainbow-dots {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .footer-rainbow-dots .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .footer-logo-text {
+      font-family: 'Comfortaa', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .footer-tagline {
+      font-size: 13px;
+      color: var(--gray-400);
+      margin-bottom: 24px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      margin-bottom: 32px;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--gray-400);
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--white);
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      color: var(--gray-600);
+    }
+
+    /* ===== レスポンシブ ===== */
+    @media (max-width: 768px) {
+      nav { display: none; }
+
+      .hero-logo-text { font-size: 36px; }
+      .hero-tagline { font-size: 22px; }
+      .hero-sub { font-size: 14px; }
+
+      .about-content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .section-title { font-size: 26px; }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .footer-links {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      section { padding: 64px 20px; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-logo-icon { width: 48px; height: 48px; }
+      .hero-logo-text { font-size: 28px; }
+      .hero-tagline { font-size: 20px; }
+
+      .about-values {
+        grid-template-columns: 1fr;
+      }
+
+      .mission-text { font-size: 18px; }
+
+      .contact-card {
+        padding: 32px 24px;
+      }
+
+      .contact-card-name { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ヘッダー -->
+  <header id="header">
+    <div class="header-inner">
+      <a href="#" class="header-logo">
+        <svg class="header-logo-icon" viewBox="0 0 52 52" fill="none">
+          <rect x="2" y="2" width="48" height="48" rx="12" fill="#667eea"/>
+          <path d="M14 38 L14 14 L38 38 L38 14" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+        <span class="header-logo-text"><span class="n-accent">N</span>anairo</span>
+      </a>
+      <nav>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ヒーロー -->
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <div class="hero-logo">
+        <svg class="hero-logo-icon" viewBox="0 0 52 52" fill="none">
+          <rect x="2" y="2" width="48" height="48" rx="12" fill="rgba(102, 126, 234, 0.2)"/>
+          <defs>
+            <linearGradient id="rainbow-n" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#f87171"/>
+              <stop offset="25%" style="stop-color:#fbbf24"/>
+              <stop offset="50%" style="stop-color:#34d399"/>
+              <stop offset="75%" style="stop-color:#60a5fa"/>
+              <stop offset="100%" style="stop-color:#a78bfa"/>
+            </linearGradient>
+          </defs>
+          <path d="M14 38 L14 14 L38 38 L38 14" stroke="url(#rainbow-n)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+        <span class="hero-logo-text">Nanairo</span>
+      </div>
+      <h1 class="hero-tagline">
+        人生に、<span class="highlight">七色の彩り</span>を。
+      </h1>
+      <p class="hero-sub">
+        テクノロジーで日常に「ワクワク」と「可能性」を届けます。<br>
+        心と暮らしをもっと豊かにするサービスを、ひとつずつ丁寧に。
+      </p>
+      <a href="#services" class="hero-cta">
+        サービスを見る <span>→</span>
+      </a>
+    </div>
+    <div class="hero-scroll-indicator">
+      <span>SCROLL</span>
+      <div class="arrow"></div>
+    </div>
+  </section>
+
+  <!-- レインボーライン -->
+  <div class="rainbow-divider"></div>
+
+  <!-- About -->
+  <section class="about" id="about">
+    <div class="section-inner">
+      <div class="about-content">
+        <div class="about-text fade-in">
+          <p class="section-label">About</p>
+          <h2 class="section-title">Nanairoについて</h2>
+          <p class="section-desc">
+            Nanairo（ナナイロ）は、「人生を楽しむ」をテーマに、
+            テクノロジーの力で日常に小さな彩りを加えるサービスを生み出しています。<br><br>
+            忙しい毎日のなかでも、ふと心が軽くなるような体験。
+            そんな「ひといき」をお届けしたいと考えています。
+          </p>
+          <div class="about-values">
+            <div class="value-card">
+              <div class="value-icon">🎨</div>
+              <div class="value-label">多彩さ</div>
+            </div>
+            <div class="value-card">
+              <div class="value-icon">✨</div>
+              <div class="value-label">ワクワク</div>
+            </div>
+            <div class="value-card">
+              <div class="value-icon">🌈</div>
+              <div class="value-label">希望</div>
+            </div>
+            <div class="value-card">
+              <div class="value-icon">🚀</div>
+              <div class="value-label">可能性</div>
+            </div>
+          </div>
+        </div>
+        <div class="about-visual fade-in">
+          <div class="about-mission-box">
+            <div class="mission-label">Brand Promise</div>
+            <div class="mission-text">
+              人生を楽しむ。<br>
+              ワクワクをつくり出す。<br>
+              可能性が広がる。
+            </div>
+            <div class="about-rainbow-dots">
+              <span class="dot" style="background: #ef4444;"></span>
+              <span class="dot" style="background: #f97316;"></span>
+              <span class="dot" style="background: #eab308;"></span>
+              <span class="dot" style="background: #22c55e;"></span>
+              <span class="dot" style="background: #3b82f6;"></span>
+              <span class="dot" style="background: #6366f1;"></span>
+              <span class="dot" style="background: #a855f7;"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="services" id="services">
+    <div class="section-inner">
+      <div class="services-header fade-in">
+        <p class="section-label">Services</p>
+        <h2 class="section-title">提供サービス</h2>
+        <p class="section-desc">心と暮らしに寄り添うサービスを開発・運営しています。</p>
+      </div>
+
+      <div class="services-grid">
+        <!-- HITOIKI -->
+        <div class="service-card fade-in">
+          <div class="service-card-header">
+            <div class="service-icon">
+              <img src="https://meditation.nanairo.life/favicon-192.png" alt="HITOIKI" onerror="this.parentElement.innerHTML='🧘‍♀️'; this.parentElement.classList.add('placeholder');">
+            </div>
+            <div class="service-name">HITOIKI</div>
+            <div class="service-tagline-text">瞑想タイマーアプリ</div>
+          </div>
+          <div class="service-card-body">
+            <p class="service-description">
+              忙しい毎日に、内なる静寂を。AIガイドとBGMで整える瞑想タイマーです。
+              Web・iOSアプリで利用でき、気分に合わせたテーマ選択や振り返り機能を備えています。
+            </p>
+            <div class="service-features">
+              <span class="service-feature-tag">Web / iOS</span>
+              <span class="service-feature-tag">AIガイド</span>
+              <span class="service-feature-tag">BGM</span>
+              <span class="service-feature-tag">振り返り</span>
+            </div>
+            <a href="https://meditation.nanairo.life" class="service-link" target="_blank">
+              サービスを見る <span class="arrow">→</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Coming Soon -->
+        <div class="service-card fade-in">
+          <div class="service-card-header coming-soon">
+            <div class="service-icon placeholder">🌱</div>
+            <div class="service-name">Coming Soon</div>
+            <div class="service-tagline-text">次のサービスを準備中</div>
+          </div>
+          <div class="service-card-body">
+            <p class="service-description">
+              新しいサービスを企画・開発中です。
+              日常にそっと寄り添い、あなたの毎日をちょっとだけ楽しくするプロダクトをお届けします。
+            </p>
+            <div class="service-features">
+              <span class="service-feature-tag">企画中</span>
+              <span class="service-feature-tag">お楽しみに</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="contact" id="contact">
+    <div class="section-inner">
+      <div class="contact-content">
+        <div class="contact-text fade-in">
+          <p class="section-label">Contact</p>
+          <h2 class="section-title">お問い合わせ</h2>
+          <p class="section-desc">
+            お仕事のご相談やサービスへのご意見など、<br>
+            お気軽にお問い合わせください。
+          </p>
+          <div class="contact-links">
+            <a href="mailto:nanairo@nanairo.life" class="contact-link-item">
+              <div class="contact-icon-wrap email-icon">
+                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+              </div>
+              <div>
+                <div class="contact-link-label">Email</div>
+                <div class="contact-link-value">nanairo@nanairo.life</div>
+              </div>
+            </a>
+            <a href="https://meditation.nanairo.life" target="_blank" class="contact-link-item">
+              <div class="contact-icon-wrap web-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+              </div>
+              <div>
+                <div class="contact-link-label">Web</div>
+                <div class="contact-link-value">meditation.nanairo.life</div>
+              </div>
+            </a>
+            <a href="https://x.com/nanairo_app" target="_blank" class="contact-link-item">
+              <div class="contact-icon-wrap x-icon">
+                <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              </div>
+              <div>
+                <div class="contact-link-label">X (Twitter)</div>
+                <div class="contact-link-value">@nanairo_app</div>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="fade-in">
+          <div class="contact-card">
+            <div class="contact-card-logo">
+              <svg viewBox="0 0 52 52" fill="none">
+                <rect x="2" y="2" width="48" height="48" rx="12" fill="#667eea"/>
+                <path d="M14 38 L14 14 L38 38 L38 14" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              </svg>
+              <span class="contact-card-logo-text">Nanairo</span>
+            </div>
+            <div class="contact-card-name">YOKO</div>
+            <div class="contact-card-title">Founder</div>
+            <p class="contact-card-tagline">
+              <strong>人生に、七色の彩りを。</strong><br>
+              Color your life with wonder & possibilities
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- レインボーライン -->
+  <div class="rainbow-divider"></div>
+
+  <!-- フッター -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-rainbow-dots">
+        <span class="dot" style="background: #ef4444;"></span>
+        <span class="dot" style="background: #f97316;"></span>
+        <span class="dot" style="background: #eab308;"></span>
+        <span class="dot" style="background: #22c55e;"></span>
+        <span class="dot" style="background: #3b82f6;"></span>
+        <span class="dot" style="background: #6366f1;"></span>
+        <span class="dot" style="background: #a855f7;"></span>
+      </div>
+      <div class="footer-logo-text">Nanairo</div>
+      <p class="footer-tagline">人生に、七色の彩りを。</p>
+      <div class="footer-links">
+        <a href="https://meditation.nanairo.life/terms" target="_blank">利用規約</a>
+        <a href="https://meditation.nanairo.life/privacy" target="_blank">プライバシーポリシー</a>
+      </div>
+      <p class="footer-copy">&copy; 2026 Nanairo. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- スクリプト -->
+  <script>
+    // ヘッダースクロール効果
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // スクロールフェードイン
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
