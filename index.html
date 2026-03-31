@@ -498,12 +498,12 @@
     }
 
     .value-card {
-      background: var(--white);
-      border: 1px solid var(--gray-200);
-      border-radius: 16px;
-      padding: 28px 20px;
+      background: var(--value-bg, #f0f4ff);
+      border: none;
+      border-radius: 20px;
+      padding: 32px 20px 28px;
       text-align: center;
-      transition: all 0.3s ease;
+      transition: all 0.35s ease;
       position: relative;
       overflow: hidden;
     }
@@ -514,49 +514,65 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 3px;
+      height: 4px;
+      background: var(--value-accent, var(--rainbow-indigo));
+      border-radius: 20px 20px 0 0;
+    }
+
+    .value-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
       background: var(--value-accent, var(--rainbow-indigo));
       opacity: 0;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.35s ease;
+      border-radius: 20px;
     }
 
     .value-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(99, 102, 241, 0.1);
-      border-color: transparent;
+      transform: translateY(-6px);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.1);
     }
 
-    .value-card:hover::before {
-      opacity: 1;
+    .value-card:hover::after {
+      opacity: 0.06;
+    }
+
+    .value-card > * {
+      position: relative;
+      z-index: 1;
     }
 
     .value-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
+      width: 60px;
+      height: 60px;
+      border-radius: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 12px;
-      background: var(--value-bg, #f0f4ff);
+      margin: 0 auto 16px;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(4px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
     }
 
     .value-icon svg {
-      width: 24px;
-      height: 24px;
+      width: 28px;
+      height: 28px;
     }
 
     .value-label {
       font-size: 15px;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--navy);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
+      letter-spacing: 0.3px;
     }
 
     .value-desc {
       font-size: 12px;
-      color: var(--gray-400);
-      line-height: 1.6;
+      color: var(--gray-600);
+      line-height: 1.7;
     }
 
     .about-visual {
@@ -788,6 +804,125 @@
       }
     }
 
+    /* ===== Coming Soon ===== */
+    .coming-soon {
+      background: var(--gray-100);
+      padding: 72px 24px;
+    }
+
+    .coming-soon-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .coming-soon-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 12px;
+    }
+
+    .coming-soon-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+
+    .coming-soon-desc {
+      font-size: 14px;
+      color: var(--gray-400);
+      margin-bottom: 48px;
+    }
+
+    .coming-soon-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .coming-soon-card {
+      background: var(--white);
+      border: 1.5px dashed var(--gray-200);
+      border-radius: 20px;
+      padding: 36px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .coming-soon-card:hover {
+      border-color: var(--rainbow-indigo);
+      box-shadow: 0 8px 32px rgba(129, 140, 248, 0.1);
+      transform: translateY(-4px);
+    }
+
+    .coming-soon-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--rainbow-indigo);
+      background: #eef2ff;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    .coming-soon-card-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      filter: grayscale(0.3);
+    }
+
+    .coming-soon-card-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .coming-soon-card-desc {
+      font-size: 13px;
+      color: var(--gray-400);
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    .coming-soon-dots {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 40px;
+    }
+
+    .coming-soon-dots .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    @media (max-width: 768px) {
+      .coming-soon-cards {
+        grid-template-columns: 1fr;
+        max-width: 360px;
+        margin: 0 auto;
+      }
+    }
+
     /* ===== Contact ===== */
     .contact {
       background: var(--white);
@@ -865,11 +1000,27 @@
     }
 
     .contact-card {
-      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+      background: linear-gradient(160deg, #1e1b4b 0%, #1e293b 60%, #0f172a 100%);
       border-radius: 24px;
-      padding: 48px 40px;
+      padding: 0;
       text-align: center;
       color: var(--white);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .contact-card-rainbow {
+      height: 4px;
+      background: linear-gradient(90deg,
+        #f87171, #fb923c, #fbbf24, #34d399, #60a5fa, #818cf8, #a78bfa,
+        #f87171, #fb923c, #fbbf24, #34d399, #60a5fa, #818cf8, #a78bfa
+      );
+      background-size: 200% 100%;
+      animation: rainbowLine 4s linear infinite;
+    }
+
+    .contact-card-inner {
+      padding: 40px 40px 44px;
     }
 
     .contact-card-logo {
@@ -877,7 +1028,7 @@
       align-items: center;
       justify-content: center;
       gap: 12px;
-      margin-bottom: 24px;
+      margin-bottom: 28px;
     }
 
     .contact-card-logo img {
@@ -907,9 +1058,39 @@
       margin-bottom: 24px;
     }
 
+    .contact-card-message {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 16px 20px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.75);
+      line-height: 1.8;
+      margin-bottom: 28px;
+      text-align: left;
+      position: relative;
+    }
+
+    .contact-card-message::before {
+      content: '\201C';
+      font-size: 36px;
+      color: var(--rainbow-indigo);
+      opacity: 0.5;
+      position: absolute;
+      top: 4px;
+      left: 12px;
+      font-family: Georgia, serif;
+      line-height: 1;
+    }
+
+    .contact-card-message p {
+      padding-left: 20px;
+    }
+
     .contact-card-tagline {
-      font-size: 14px;
-      color: var(--gray-400);
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.4);
       line-height: 1.6;
     }
 
@@ -1221,6 +1402,44 @@
     </div>
   </section>
 
+  <!-- Coming Soon -->
+  <section class="coming-soon">
+    <div class="coming-soon-inner fade-in">
+      <p class="coming-soon-label">Next Services</p>
+      <h2 class="coming-soon-title">もっと多くの彩りを、準備中</h2>
+      <p class="coming-soon-desc">Nanairoはこれからも、あなたの日常に新しい体験を届けていきます。</p>
+      <div class="coming-soon-cards">
+        <div class="coming-soon-card">
+          <span class="coming-soon-badge">Coming Soon</span>
+          <div class="coming-soon-card-icon" style="background: #fef2f2;">🌿</div>
+          <div class="coming-soon-card-name">習慣サポートアプリ</div>
+          <p class="coming-soon-card-desc">小さな習慣を積み重ねて、<br>理想の自分へ。</p>
+        </div>
+        <div class="coming-soon-card">
+          <span class="coming-soon-badge">Coming Soon</span>
+          <div class="coming-soon-card-icon" style="background: #fefce8;">✨</div>
+          <div class="coming-soon-card-name">ウェルネスジャーナル</div>
+          <p class="coming-soon-card-desc">感情と向き合い、<br>自分を深く知るための記録ツール。</p>
+        </div>
+        <div class="coming-soon-card">
+          <span class="coming-soon-badge">Coming Soon</span>
+          <div class="coming-soon-card-icon" style="background: #eef2ff;">🎨</div>
+          <div class="coming-soon-card-name">もっと、ワクワクを</div>
+          <p class="coming-soon-card-desc">次のサービスは<br>構想中です。お楽しみに。</p>
+        </div>
+      </div>
+      <div class="coming-soon-dots">
+        <span class="dot" style="background: #ef4444;"></span>
+        <span class="dot" style="background: #f97316;"></span>
+        <span class="dot" style="background: #eab308;"></span>
+        <span class="dot" style="background: #22c55e;"></span>
+        <span class="dot" style="background: #3b82f6;"></span>
+        <span class="dot" style="background: #6366f1;"></span>
+        <span class="dot" style="background: #a855f7;"></span>
+      </div>
+    </div>
+  </section>
+
   <!-- Contact -->
   <section class="contact" id="contact">
     <div class="section-inner">
@@ -1255,16 +1474,22 @@
         </div>
         <div class="fade-in">
           <div class="contact-card">
-            <div class="contact-card-logo">
-              <img src="favicon.svg" alt="Nanairo">
-              <span class="contact-card-logo-text">Nanairo</span>
+            <div class="contact-card-rainbow"></div>
+            <div class="contact-card-inner">
+              <div class="contact-card-logo">
+                <img src="favicon.svg" alt="Nanairo">
+                <span class="contact-card-logo-text">Nanairo</span>
+              </div>
+              <div class="contact-card-name">YOKO</div>
+              <div class="contact-card-title">Founder</div>
+              <div class="contact-card-message">
+                <p>どんな小さなことでも、気軽にメッセージをください。お仕事の話も、サービスへの感想も、ただの「いいね」でも、全部うれしいです。</p>
+              </div>
+              <p class="contact-card-tagline">
+                <strong>人生に、七色の彩りを。</strong><br>
+                Color your life with wonder & possibilities
+              </p>
             </div>
-            <div class="contact-card-name">YOKO</div>
-            <div class="contact-card-title">Founder</div>
-            <p class="contact-card-tagline">
-              <strong>人生に、七色の彩りを。</strong><br>
-              Color your life with wonder & possibilities
-            </p>
           </div>
         </div>
       </div>
