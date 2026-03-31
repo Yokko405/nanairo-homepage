@@ -5,168 +5,662 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>プライバシーポリシー | Nanairo</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Quicksand:wght@500;600;700&family=Comfortaa:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Noto Sans JP', sans-serif;
-      background: linear-gradient(145deg, #1e293b 0%, #0f172a 40%, #1e1b4b 100%);
-      color: rgba(255,255,255,0.9);
-      min-height: 100vh;
-      padding: 40px 20px;
+    /* ===== リセット & ベース ===== */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-    .container {
+
+    :root {
+      --rainbow-red: #f87171;
+      --rainbow-orange: #fb923c;
+      --rainbow-yellow: #fbbf24;
+      --rainbow-green: #34d399;
+      --rainbow-blue: #60a5fa;
+      --rainbow-indigo: #818cf8;
+      --rainbow-purple: #a78bfa;
+
+      --navy: #1e293b;
+      --navy-light: #334155;
+      --gray-100: #f8fafc;
+      --gray-200: #e2e8f0;
+      --gray-400: #94a3b8;
+      --gray-600: #475569;
+      --white: #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', 'Noto Sans JP', sans-serif;
+      color: var(--navy);
+      line-height: 1.7;
+      background: var(--gray-100);
+      overflow-x: hidden;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ===== アニメーション ===== */
+    @keyframes rainbowLine {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== ヘッダー ===== */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 16px 24px;
+      transition: all 0.4s ease;
+      background: transparent;
+    }
+
+    header.scrolled {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 2px 24px rgba(30, 41, 59, 0.08);
+    }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-logo-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+    }
+
+    .header-logo-text {
+      font-family: 'Outfit', sans-serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--white);
+      transition: color 0.4s ease;
+    }
+
+    header.scrolled .header-logo-text {
+      color: var(--navy);
+    }
+
+    nav {
+      display: flex;
+      gap: 28px;
+    }
+
+    nav a {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.85);
+      transition: color 0.3s ease;
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--rainbow-indigo);
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover::after { width: 100%; }
+
+    header.scrolled nav a {
+      color: var(--navy-light);
+    }
+
+    header.scrolled nav a:hover {
+      color: var(--navy);
+    }
+
+    /* ハンバーガー */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    header.scrolled .hamburger span { background: var(--navy); }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* モバイルナビ */
+    .mobile-nav { display: none; }
+
+    .mobile-nav-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 150;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+
+    .mobile-nav-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 280px;
+      background: var(--white);
+      z-index: 200;
+      padding: 80px 32px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .mobile-nav-link {
+      display: block;
+      padding: 14px 0;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--navy);
+      border-bottom: 1px solid var(--gray-200);
+      transition: color 0.2s ease;
+    }
+
+    .mobile-nav-link:hover { color: var(--rainbow-indigo); }
+
+    .mobile-nav-rainbow {
+      margin-top: 32px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .mobile-nav-rainbow span {
+      flex: 1;
+      height: 4px;
+      border-radius: 2px;
+    }
+
+    .mobile-nav.open .mobile-nav-backdrop {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .mobile-nav.open .mobile-nav-drawer {
+      transform: translateX(0);
+    }
+
+    /* ===== レインボーデバイダー ===== */
+    .rainbow-divider {
+      height: 4px;
+      background: linear-gradient(90deg,
+        #f87171, #fb923c, #fbbf24, #34d399, #60a5fa, #818cf8, #a78bfa,
+        #f87171, #fb923c, #fbbf24, #34d399, #60a5fa, #818cf8, #a78bfa
+      );
+      background-size: 200% 100%;
+      animation: rainbowLine 4s linear infinite;
+    }
+
+    /* ===== ページヒーロー ===== */
+    .page-hero {
+      background: linear-gradient(145deg, #1e293b 0%, #0f172a 40%, #1e1b4b 100%);
+      padding: 140px 24px 80px;
+      text-align: center;
+      color: var(--white);
+    }
+
+    .page-hero-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--rainbow-indigo);
+      margin-bottom: 16px;
+    }
+
+    .page-hero h1 {
+      font-family: 'Outfit', 'Noto Sans JP', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .page-hero-sub {
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.55);
+      letter-spacing: 0.5px;
+    }
+
+    /* ===== コンテンツ ===== */
+    .legal-content {
+      background: var(--gray-100);
+      padding: 80px 24px 100px;
+    }
+
+    .legal-container {
       max-width: 800px;
       margin: 0 auto;
     }
-    .back-link {
-      display: inline-block;
-      margin-bottom: 30px;
-      color: rgba(255,255,255,0.6);
-      text-decoration: none;
-      font-size: 0.9rem;
-      transition: color 0.2s;
-    }
-    .back-link:hover { color: #fff; }
-    h1 {
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin-bottom: 30px;
-      padding-bottom: 15px;
-      border-bottom: 1px solid rgba(255,255,255,0.2);
-    }
-    h2 {
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-top: 35px;
-      margin-bottom: 12px;
-      color: #a5b4fc;
-    }
-    p, li {
-      line-height: 1.9;
+
+    .legal-intro {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 32px 36px;
+      margin-bottom: 48px;
+      border: 1px solid var(--gray-200);
       font-size: 0.95rem;
-      color: rgba(255,255,255,0.85);
+      color: var(--gray-600);
+      line-height: 1.9;
     }
-    ol, ul {
-      padding-left: 25px;
+
+    .legal-section {
+      margin-bottom: 8px;
+    }
+
+    .legal-content h2 {
+      font-family: 'Outfit', 'Noto Sans JP', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--navy);
+      border-left: 3px solid var(--rainbow-indigo);
+      padding: 10px 0 10px 16px;
+      margin-top: 40px;
+      margin-bottom: 14px;
+      background: var(--white);
+      border-radius: 0 8px 8px 0;
+    }
+
+    .legal-content p {
+      font-size: 0.93rem;
+      color: var(--gray-600);
+      line-height: 1.9;
       margin-bottom: 12px;
     }
-    li { margin-bottom: 6px; }
-    ul { list-style: disc; }
-    hr {
-      margin: 40px 0;
-      border: 0;
-      border-top: 1px solid rgba(255,255,255,0.15);
+
+    .legal-content ol,
+    .legal-content ul {
+      padding-left: 24px;
+      margin-bottom: 12px;
     }
-    .meta {
+
+    .legal-content li {
+      font-size: 0.93rem;
+      color: var(--gray-600);
+      line-height: 1.9;
+      margin-bottom: 6px;
+    }
+
+    .legal-content ul { list-style: disc; }
+
+    .legal-content strong {
+      color: var(--navy);
+      font-weight: 600;
+    }
+
+    .legal-content a {
+      color: var(--rainbow-indigo);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .legal-meta {
+      margin-top: 56px;
+      padding-top: 24px;
+      border-top: 1px solid var(--gray-200);
       text-align: right;
       font-size: 0.85rem;
-      color: rgba(255,255,255,0.5);
+      color: var(--gray-400);
     }
-    .footer-nav {
-      margin-top: 50px;
-      padding-top: 30px;
-      border-top: 1px solid rgba(255,255,255,0.1);
+
+    /* ===== フッター ===== */
+    footer {
+      background: var(--navy);
+      padding: 48px 24px 32px;
       text-align: center;
-      font-size: 0.85rem;
-      color: rgba(255,255,255,0.4);
     }
-    .footer-nav a {
-      color: rgba(255,255,255,0.5);
-      text-decoration: none;
-      margin: 0 12px;
+
+    .footer-inner {
+      max-width: 1000px;
+      margin: 0 auto;
     }
-    .footer-nav a:hover { color: #fff; }
+
+    .footer-rainbow-dots {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .footer-rainbow-dots .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .footer-logo-text {
+      font-family: 'Comfortaa', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .footer-tagline {
+      font-size: 13px;
+      color: var(--gray-400);
+      margin-bottom: 24px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      margin-bottom: 32px;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--gray-400);
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover { color: var(--white); }
+
+    .footer-copy {
+      font-size: 12px;
+      color: var(--gray-600);
+    }
+
+    /* ===== レスポンシブ ===== */
+    @media (max-width: 768px) {
+      nav { display: none; }
+      .hamburger { display: flex; }
+      .mobile-nav { display: block; }
+
+      .page-hero { padding: 120px 24px 60px; }
+      .page-hero h1 { font-size: 1.7rem; }
+
+      .legal-content { padding: 48px 20px 64px; }
+      .legal-intro { padding: 24px; }
+      .legal-content h2 { padding: 8px 0 8px 14px; }
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <a href="/" class="back-link">← Nanairo ホームへ戻る</a>
-    <h1>プライバシーポリシー (Privacy Policy)</h1>
 
-    <p>nanairo（以下「運営者」といいます。）は、運営者が提供する瞑想アプリ「HITOIKI」（以下「本サービス」といいます。）における、ユーザーの個人情報の取扱いについて、以下のとおりプライバシーポリシー（以下「本ポリシー」といいます。）を定めます。</p>
+  <!-- ヘッダー -->
+  <header id="header">
+    <div class="header-inner">
+      <a href="/" class="header-logo">
+        <img src="favicon.svg" alt="Nanairo" class="header-logo-icon">
+        <span class="header-logo-text">Nanairo</span>
+      </a>
+      <nav>
+        <a href="/">ホーム</a>
+        <a href="/terms.html">利用規約</a>
+        <a href="/privacy.html">プライバシーポリシー</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="メニューを開く">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
 
-    <h2>第1条（個人情報）</h2>
-    <p>「個人情報」とは、個人情報保護法にいう「個人情報」を指すものとし、生存する個人に関する情報であって、当該情報に含まれる氏名、生年月日、住所、電話番号、連絡先その他の記述等により特定の個人を識別できる情報、および容貌、指紋、声紋にかかるデータ、および健康保険証の保険者番号などの当該情報単体から特定の個人を識別できる情報（個人識別符号）を指します。</p>
-
-    <h2>第2条（個人情報の収集方法）</h2>
-    <p>運営者は、ユーザーが利用登録をする際にメールアドレスなどの個人情報をお尋ねする他、本サービスの利用履歴（瞑想時間、振り返り内容等）を収集します。<br>
-    また、有料プラン利用時には、Apple の In-App Purchase を通じて支払情報が処理されます。運営者はクレジットカード情報等の決済情報を保持しません。</p>
-
-    <h2>第3条（個人情報を収集・利用する目的）</h2>
-    <p>運営者が個人情報を収集・利用する目的は、以下のとおりです。</p>
-    <ol>
-      <li>本サービスの提供・運営のため</li>
-      <li>ユーザーからのお問い合わせに回答するため（本人確認を行うことを含む）</li>
-      <li>メンテナンス、重要なお知らせなど必要に応じたご連絡のため</li>
-      <li>利用規約に違反したユーザーや、不正・不当な目的でサービスを利用しようとするユーザーの特定をし、ご利用をお断りするため</li>
-      <li>有料プランの課金および決済処理のため</li>
-      <li>上記の利用目的に付随する目的</li>
-    </ol>
-
-    <h2>第4条（利用目的の変更）</h2>
-    <ol>
-      <li>運営者は、利用目的が変更前と関連性を有すると合理的に認められる場合に限り、個人情報の利用目的を変更するものとします。</li>
-      <li>利用目的の変更を行った場合には、変更後の目的について、本サービス所定の方法によりユーザーに通知し、または本ウェブサイト上に公表するものとします。</li>
-    </ol>
-
-    <h2>第5条（個人情報の第三者提供）</h2>
-    <ol>
-      <li>運営者は、次に掲げる場合を除いて、あらかじめユーザーの同意を得ることなく、第三者に個人情報を提供することはありません。ただし、個人情報保護法その他の法令で認められる場合を除きます。
-        <ul>
-          <li>人の生命、身体または財産の保護のために必要がある場合であって、本人の同意を得ることが困難であるとき</li>
-          <li>公衆衛生の向上または児童の健全な育成の推進のために特に必要がある場合であって、本人の同意を得ることが困難であるとき</li>
-          <li>国の機関もしくは地方公共団体またはその委託を受けた者が法令の定める事務を遂行することに対して協力する必要がある場合であって、本人の同意を得ることにより当該事務の遂行に支障を及ぼすおそれがあるとき</li>
-        </ul>
-      </li>
-      <li>前項の定めにかかわらず、次に掲げる場合には、当該情報の提供先は第三者に該当しないものとします。
-        <ul>
-          <li>運営者が利用目的の達成に必要な範囲内において個人情報の取扱いの全部または一部を委託する場合（例：サーバーホスティング、決済代行）</li>
-          <li>合併その他の事由による事業の承継に伴って個人情報が提供される場合</li>
-        </ul>
-      </li>
-    </ol>
-
-    <h2>第6条（外部サービスの利用）</h2>
-    <p>本サービスは、以下の外部サービスを利用してユーザーの情報を取扱う場合があります。</p>
-    <ul>
-      <li><strong>Supabase</strong>: 認証およびデータベース管理のため</li>
-      <li><strong>Apple In-App Purchase</strong>: 決済処理のため</li>
-      <li><strong>Google Cloud Platform</strong>: 音声合成およびサーバー運用のため</li>
-    </ul>
-
-    <h2>第7条（個人情報の開示）</h2>
-    <p>運営者は、本人から個人情報の開示を求められたときは、本人に対し遅滞なくこれを開示します。ただし、開示することにより次のいずれかに該当する場合は、その全部または一部を開示しないこともあり、開示しない決定をした場合には、その旨を遅滞なく通知します。</p>
-    <ol>
-      <li>本人または第三者の生命、身体、財産その他の権利利益を害するおそれがある場合</li>
-      <li>運営者の業務の適正な実施に著しい支障を及ぼすおそれがある場合</li>
-      <li>その他法令に違反することとなる場合</li>
-    </ol>
-
-    <h2>第8条（個人情報の訂正および削除）</h2>
-    <ol>
-      <li>ユーザーは、運営者の保有する自己の個人情報が誤った情報である場合には、運営者が定める手続きにより、運営者に対して個人情報の訂正、追加または削除（以下「訂正等」といいます。）を請求することができます。</li>
-      <li>運営者は、ユーザーから前項の請求を受けてその請求に応じる必要があると判断した場合には、遅滞なく、当該個人情報の訂正等を行うものとします。</li>
-    </ol>
-
-    <h2>第9条（プライバシーポリシーの変更）</h2>
-    <ol>
-      <li>本ポリシーの内容は、法令その他本ポリシーに別段の定めのある事項を除いて、ユーザーに通知することなく変更することができるものとします。</li>
-      <li>運営者が別途定める場合を除いて、変更後のプライバシーポリシーは、本ウェブサイトに掲載したときから効力を生じるものとします。</li>
-    </ol>
-
-    <h2>第10条（お問い合わせ窓口）</h2>
-    <p>本ポリシーに関するお問い合わせは、下記までお願いいたします。<br>
-    Email: <a href="mailto:nanairo.core@gmail.com" style="color:#a5b4fc;">nanairo.core@gmail.com</a></p>
-
-    <hr>
-    <p class="meta">2026年1月1日 制定<br>運営者: nanairo</p>
-
-    <div class="footer-nav">
-      <a href="/">ホーム</a>
-      <a href="/terms.html">利用規約</a>
-      <p style="margin-top:16px">&copy; 2026 Nanairo. All rights reserved.</p>
+  <!-- モバイルナビ -->
+  <div class="mobile-nav" id="mobileNav">
+    <div class="mobile-nav-backdrop" id="mobileNavBackdrop"></div>
+    <div class="mobile-nav-drawer">
+      <a href="/" class="mobile-nav-link">ホーム</a>
+      <a href="/terms.html" class="mobile-nav-link">利用規約</a>
+      <a href="/privacy.html" class="mobile-nav-link">プライバシーポリシー</a>
+      <div class="mobile-nav-rainbow">
+        <span style="background:#ef4444;"></span>
+        <span style="background:#f97316;"></span>
+        <span style="background:#eab308;"></span>
+        <span style="background:#22c55e;"></span>
+        <span style="background:#3b82f6;"></span>
+        <span style="background:#6366f1;"></span>
+        <span style="background:#a855f7;"></span>
+      </div>
     </div>
   </div>
+
+  <!-- ページヒーロー -->
+  <section class="page-hero">
+    <div class="fade-in">
+      <p class="page-hero-label">Legal</p>
+      <h1>プライバシーポリシー</h1>
+      <p class="page-hero-sub">Privacy Policy</p>
+    </div>
+  </section>
+
+  <!-- レインボーライン -->
+  <div class="rainbow-divider"></div>
+
+  <!-- コンテンツ -->
+  <section class="legal-content">
+    <div class="legal-container">
+
+      <div class="legal-intro fade-in">
+        nanairo（以下「運営者」といいます。）は、運営者が提供する瞑想アプリ「HITOIKI」（以下「本サービス」といいます。）における、ユーザーの個人情報の取扱いについて、以下のとおりプライバシーポリシー（以下「本ポリシー」といいます。）を定めます。
+      </div>
+
+      <div class="legal-section fade-in">
+        <h2>第1条（個人情報）</h2>
+        <p>「個人情報」とは、個人情報保護法にいう「個人情報」を指すものとし、生存する個人に関する情報であって、当該情報に含まれる氏名、生年月日、住所、電話番号、連絡先その他の記述等により特定の個人を識別できる情報、および容貌、指紋、声紋にかかるデータ、および健康保険証の保険者番号などの当該情報単体から特定の個人を識別できる情報（個人識別符号）を指します。</p>
+      </div>
+
+      <div class="legal-section fade-in">
+        <h2>第2条（個人情報の収集方法）</h2>
+        <p>運営者は、ユーザーが利用登録をする際にメールアドレスなどの個人情報をお尋ねする他、本サービスの利用履歴（瞑想時間、振り返り内容等）を収集します。<br>
+        また、有料プラン利用時には、Apple の In-App Purchase を通じて支払情報が処理されます。運営者はクレジットカード情報等の決済情報を保持しません。</p>
+      </div>
+
+      <div class="legal-section fade-in">
+        <h2>第3条（個人情報を収集・利用する目的）</h2>
+        <p>運営者が個人情報を収集・利用する目的は、以下のとおりです。</p>
+        <ol>
+          <li>本サービスの提供・運営のため</li>
+          <li>ユーザーからのお問い合わせに回答するため（本人確認を行うことを含む）</li>
+          <li>メンテナンス、重要なお知らせなど必要に応じたご連絡のため</li>
+          <li>利用規約に違反したユーザーや、不正・不当な目的でサービスを利用しようとするユーザーの特定をし、ご利用をお断りするため</li>
+          <li>有料プランの課金および決済処理のため</li>
+          <li>上記の利用目的に付随する目的</li>
+        </ol>
+      </div>
+
+      <div class="legal-section fade-in">
+        <h2>第4条（利用目的の変更）</h2>
+        <ol>
+          <li>運営者は、利用目的が変更前と関連性を有すると合理的に認められる場合に限り、個人情報の利用目的を変更するものとします。</li>
+          <li>利用目的の変更を行った場合には、変更後の目的について、本サービス所定の方法によりユーザーに通知し、または本ウェブサイト上に公表するものとします。</li>
+        </ol>
+      </div>
+
+      <div class="legal-section fade-in">
+        <h2>第5条（個人情報の第三者提供）</h2>
+        <ol>
+          <li>運営者は、次に掲げる場合を除いて、あらかじめユーザーの同意を得ることなく、第三者に個人情報を提供することはありません。ただし、個人情報保護法その他の法令で認められる場合を除きます。
+            <ul>
+              <li>人の生命、身体または財産の保護のために必要がある場合であって、本人の同意を得ることが困難であるとき</li>
+              <li>公衆衛生の向上または児童の健全な育成の推進のために特に必要がある場合であって、本人の同意を得ることが困難であるとき</li>
+              <li>国の機関もしくは地方公共団体またはその委託を受けた者が法令の定める事務を遂行することに対して協力する必要がある場合であって、本人の同意を得ることにより当該事務の遂行に支障を及ぼすおそれがあるとき</li>
+            </ul>
+          </li>
+          <li>前項の定めにかかわらず、次に掲げる場合には、当該情報の提供先は第三者に該当しないものとします。
+            <ul>
+              <li>運営者が利用目的の達成に必要な範囲内において個人情報の取扱いの全部または一部を委託する場合（例：サーバーホスティング、決済代行）</li>
+              <li>合併その他の事由による事業の承継に伴って個人情報が提供される場合</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+
+      <div class="legal-section fade-in">
+        <h2>第6条（外部サービスの利用）</h2>
+        <p>本サービスは、以下の外部サービスを利用してユーザーの情報を取扱う場合があります。</p>
+        <ul>
+          <li><strong>Supabase</strong>: 認証およびデータベース管理のため</li>
+          <li><strong>Apple In-App Purchase</strong>: 決済処理のため</li>
+          <li><strong>Google Cloud Platform</strong>: 音声合成およびサーバー運用のため</li>
+        </ul>
+      </div>
+
+      <div class="legal-section fade-in">
+        <h2>第7条（個人情報の開示）</h2>
+        <p>運営者は、本人から個人情報の開示を求められたときは、本人に対し遅滞なくこれを開示します。ただし、開示することにより次のいずれかに該当する場合は、その全部または一部を開示しないこともあり、開示しない決定をした場合には、その旨を遅滞なく通知します。</p>
+        <ol>
+          <li>本人または第三者の生命、身体、財産その他の権利利益を害するおそれがある場合</li>
+          <li>運営者の業務の適正な実施に著しい支障を及ぼすおそれがある場合</li>
+          <li>その他法令に違反することとなる場合</li>
+        </ol>
+      </div>
+
+      <div class="legal-section fade-in">
+        <h2>第8条（個人情報の訂正および削除）</h2>
+        <ol>
+          <li>ユーザーは、運営者の保有する自己の個人情報が誤った情報である場合には、運営者が定める手続きにより、運営者に対して個人情報の訂正、追加または削除（以下「訂正等」といいます。）を請求することができます。</li>
+          <li>運営者は、ユーザーから前項の請求を受けてその請求に応じる必要があると判断した場合には、遅滞なく、当該個人情報の訂正等を行うものとします。</li>
+        </ol>
+      </div>
+
+      <div class="legal-section fade-in">
+        <h2>第9条（プライバシーポリシーの変更）</h2>
+        <ol>
+          <li>本ポリシーの内容は、法令その他本ポリシーに別段の定めのある事項を除いて、ユーザーに通知することなく変更することができるものとします。</li>
+          <li>運営者が別途定める場合を除いて、変更後のプライバシーポリシーは、本ウェブサイトに掲載したときから効力を生じるものとします。</li>
+        </ol>
+      </div>
+
+      <div class="legal-section fade-in">
+        <h2>第10条（お問い合わせ窓口）</h2>
+        <p>本ポリシーに関するお問い合わせは、下記までお願いいたします。<br>
+        Email: <a href="mailto:nanairo.core@gmail.com">nanairo.core@gmail.com</a></p>
+      </div>
+
+      <div class="legal-meta fade-in">
+        2026年1月1日 制定<br>運営者: nanairo
+      </div>
+
+    </div>
+  </section>
+
+  <!-- レインボーライン -->
+  <div class="rainbow-divider"></div>
+
+  <!-- フッター -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-rainbow-dots">
+        <span class="dot" style="background: #ef4444;"></span>
+        <span class="dot" style="background: #f97316;"></span>
+        <span class="dot" style="background: #eab308;"></span>
+        <span class="dot" style="background: #22c55e;"></span>
+        <span class="dot" style="background: #3b82f6;"></span>
+        <span class="dot" style="background: #6366f1;"></span>
+        <span class="dot" style="background: #a855f7;"></span>
+      </div>
+      <div class="footer-logo-text">Nanairo</div>
+      <p class="footer-tagline">人生に、七色の彩りを。</p>
+      <div class="footer-links">
+        <a href="/">ホーム</a>
+        <a href="/terms.html">利用規約</a>
+        <a href="/privacy.html">プライバシーポリシー</a>
+      </div>
+      <p class="footer-copy">&copy; 2026 Nanairo. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // ヘッダースクロール効果
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // スクロールフェードイン
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // ハンバーガーメニュー
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobileNav');
+    const mobileNavBackdrop = document.getElementById('mobileNavBackdrop');
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+    function openMenu() {
+      hamburger.classList.add('open');
+      mobileNav.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMenu() {
+      hamburger.classList.remove('open');
+      mobileNav.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    hamburger.addEventListener('click', () => {
+      mobileNav.classList.contains('open') ? closeMenu() : openMenu();
+    });
+
+    mobileNavBackdrop.addEventListener('click', closeMenu);
+    mobileNavLinks.forEach(link => link.addEventListener('click', closeMenu));
+  </script>
 </body>
 </html>
